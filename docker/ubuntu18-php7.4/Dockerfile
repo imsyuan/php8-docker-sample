@@ -42,6 +42,15 @@ COPY ports.conf /etc/apache2/ports.conf
 
 EXPOSE 8080
 
+WORKDIR /home/log
+# 調整 Apache2 ports
+RUN set -xe \
+    # Change apache2 permission
+    && chown -R www-data:www-data /var/log/apache2 \
+    && chown -R www-data:www-data /var/run/apache2 \
+    && chmod -R 777 /var/log/apache2 \
+    && chmod -R 777 /var/run/apache2 \
+
 WORKDIR /var/www/html
 
 CMD apachectl -D FOREGROUND
