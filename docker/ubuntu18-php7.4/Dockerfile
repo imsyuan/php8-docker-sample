@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Taipei
 WORKDIR /var/www/html
 
-
+RUN echo 'Hi from docker' > /var/www/html/index.php
 
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
@@ -40,16 +40,14 @@ RUN a2enconf servername
 COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY ports.conf /etc/apache2/ports.conf
 
-EXPOSE 8080
-
-WORKDIR /home/log
 # 調整 Apache2 ports
-RUN set -xe \
-    # Change apache2 permission
-    && chown -R www-data:www-data /var/log/apache2 \
-    && chown -R www-data:www-data /var/run/apache2 \
-    && chmod -R 777 /var/log/apache2 \
-    && chmod -R 777 /var/run/apache2 \
+RUN chown -R www-data:www-data /var/log/apache2
+RUN chown -R www-data:www-data /var/run/apache2
+RUN chmod -R 777 /var/log/apache2
+RUN chmod -R 777 /var/run/apache2
+RUN chmod -R a+w /var/log/apache2
+
+EXPOSE 8080
 
 WORKDIR /var/www/html
 
